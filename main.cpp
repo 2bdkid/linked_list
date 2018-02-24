@@ -42,7 +42,7 @@ public:
       end = end->next.get();
     }
 
-    Type data = end->data;
+    const Type data = end->data;
 
     if (previous) {
       previous->next = nullptr;
@@ -67,8 +67,8 @@ public:
       throw;
     }
 
-    Type data = head->data;
-    head.reset(head->next.get());
+    const Type data = head->data;
+    head = std::move(head->next);
     return data;
   }
   
@@ -89,15 +89,32 @@ public:
     return size;
   }
 
+  void destroy() {
+    if (!head) {
+      return;
+    }
+
+    while (head->next) {
+      head = std::move(head->next);
+    }
+
+    head = nullptr;
+  }
+
 private:
   std::unique_ptr<Node<Type>> head = nullptr;
 };
 
 int main() {
   LinkedList<int> list;
-  list.push_front(1);
-  list.push_back(2);
 
-  std::cout << list.pop_back() << '\n';
-  std::cout << list.pop_front() << '\n';
+  list.push_front(0);
+  list.push_front(1);
+  list.push_front(2);
+  list.pop_back();
+  list.pop_front();
+  list.push_back(3);
+  list.push_front(4);
+  
+  list.destroy();
 }
