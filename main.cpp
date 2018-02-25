@@ -15,14 +15,11 @@ template<typename Type>
 class LinkedList {
 public:
   void push_back(const Type& data) {
-    if (!head) {
-      head = std::make_unique<Node<Type>>(data);
-      return;
-    }
-
     Node<Type>* end = head.get();
-
-    while (end->next) {
+    
+    while (end) {
+      if (!end->next)
+	break;
       end = end->next.get();
     }
 
@@ -30,18 +27,16 @@ public:
   }
 
   Type pop_back() {
-    if (!head) {
-      throw;
-    }
-    
     Node<Type>* end = head.get();
     Node<Type>* previous = nullptr;
-    
-    while (end->next) {
+
+    while (end) {
       previous = end;
+      if (!end->next)
+	break;
       end = end->next.get();
     }
-
+    
     const Type data = end->data;
 
     if (previous) {
@@ -52,11 +47,6 @@ public:
   }
 
   void push_front(const Type& data) {
-    if (!head) {
-      head = std::make_unique<Node<Type>>(data);
-      return;
-    }
-
     std::unique_ptr<Node<Type>> new_head = std::make_unique<Node<Type>>(data);
     new_head->next = std::move(head);
     head = std::move(new_head);
@@ -72,24 +62,7 @@ public:
     return data;
   }
   
-  std::size_t size() const {
-    /* check for empty list */
-    if (!head) {
-      return 0;
-    }
-    
-    std::size_t size = 1;
-    Node<Type>* traverse = head.get();
-
-    while (traverse->next) {
-      traverse = traverse->next.get();
-      size++;
-    }
-
-    return size;
-  }
-
-  void destroy() {
+  ~LinkedList() {
     if (!head) {
       return;
     }
@@ -111,10 +84,8 @@ int main() {
   list.push_front(0);
   list.push_front(1);
   list.push_front(2);
+
   list.pop_back();
-  list.pop_front();
-  list.push_back(3);
-  list.push_front(4);
-  
-  list.destroy();
+  list.pop_back();
+  list.pop_back();
 }
