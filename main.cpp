@@ -49,6 +49,30 @@ public:
     head = std::move(head->next);
     return data;
   }
+
+  void insert_at(std::size_t index, const Type& data) {
+    auto target = &head;
+
+    for (auto i = 0u; i < index; i++) {
+      target = &(*target)->next;
+    }
+
+    auto new_node = std::make_unique<Node<Type>>(data);
+    new_node->next = std::move(*target);
+    *target = std::move(new_node);
+  }
+
+  void delete_at(std::size_t index) {
+    auto target = &head;
+    auto previous = &head;
+    
+    for (auto i = 0u; i <= index; i++) {
+      previous = target;
+      target = &(*target)->next;
+    }
+
+    *previous = std::move(*target);
+  }
   
   ~LinkedList() {
     auto end = &head;
@@ -69,19 +93,8 @@ int main() {
   list.push_back(1);
   list.push_back(2);
 
-  list.pop_back();
-  list.pop_back();
-  list.pop_back();
+  list.delete_at(1);
 
-  list.push_front(0);
-  list.push_front(1);
-  list.push_front(2);
-
-  list.pop_front();
-  list.pop_front();
-  list.pop_front();
-
-  list.push_front(0);
-  list.push_back(1);
-  list.push_front(2);
+  std::cout << list.pop_back() << '\n';
+  std::cout << list.pop_back() << '\n';
 }
