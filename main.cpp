@@ -34,7 +34,7 @@ public:
     }
 
     const Type data = (*previous)->data;
-    (*previous) = nullptr;
+    *previous = nullptr;
     return data;
   }
 
@@ -54,7 +54,7 @@ public:
     auto end = &head;
 
     while (*end) {
-      (*end) = std::move((*end)->next);
+      *end = std::move((*end)->next);
     }
   }
 
