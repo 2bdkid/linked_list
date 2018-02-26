@@ -84,7 +84,7 @@ public:
     return (*target)->data;
   }
   
-  ~LinkedList() {
+  virtual ~LinkedList() {
     auto end = &head;
 
     while (*end) {
