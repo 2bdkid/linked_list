@@ -7,14 +7,6 @@
 #include <utility>
 
 template<typename Type>
-class Node {
-public:
-  Node(const Type& data) : data {data} {}
-  std::unique_ptr<Node<Type>> next = nullptr;
-  Type data;
-};
-
-template<typename Type>
 class LinkedList {
 public:
   void push_back(const Type& data) {
@@ -24,7 +16,7 @@ public:
       end = &(*end)->next;
     }
 
-    *end = std::make_unique<Node<Type>>(data);
+    *end = std::make_unique<Node>(data);
   }
 
   Type pop_back() {
@@ -42,7 +34,7 @@ public:
   }
 
   void push_front(const Type& data) {
-    auto new_head = std::make_unique<Node<Type>>(data);
+    auto new_head = std::make_unique<Node>(data);
     new_head->next = std::move(head);
     head = std::move(new_head);
   }
@@ -60,7 +52,7 @@ public:
       target = &(*target)->next;
     }
 
-    auto new_node = std::make_unique<Node<Type>>(data);
+    auto new_node = std::make_unique<Node>(data);
     new_node->next = std::move(*target);
     *target = std::move(new_node);
   }
@@ -96,7 +88,14 @@ public:
   }
 
 private:
-  std::unique_ptr<Node<Type>> head = nullptr;
+  class Node {
+  public:
+    Node(const Type& data) : data {data} {}
+    std::unique_ptr<Node> next = nullptr;
+    Type data;
+  };
+
+  std::unique_ptr<Node> head = nullptr;
 };
 
 #endif
