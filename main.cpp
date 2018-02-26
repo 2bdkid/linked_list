@@ -39,7 +39,7 @@ public:
   }
 
   void push_front(const Type& data) {
-    std::unique_ptr<Node<Type>> new_head = std::make_unique<Node<Type>>(data);
+    auto new_head = std::make_unique<Node<Type>>(data);
     new_head->next = std::move(head);
     head = std::move(new_head);
   }
