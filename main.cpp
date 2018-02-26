@@ -15,34 +15,26 @@ template<typename Type>
 class LinkedList {
 public:
   void push_back(const Type& data) {
-    Node<Type>* end = head.get();
-    
-    while (end) {
-      if (!end->next)
-	break;
-      end = end->next.get();
+    auto end = &head;
+
+    while (*end) {
+      end = &(*end)->next;
     }
 
-    end->next = std::make_unique<Node<Type>>(data);
+    *end = std::make_unique<Node<Type>>(data);
   }
 
   Type pop_back() {
-    Node<Type>* end = head.get();
-    Node<Type>* previous = nullptr;
+    auto end = &head;
+    auto previous = &head;
 
-    while (end) {
+    while (*end) {
       previous = end;
-      if (!end->next)
-	break;
-      end = end->next.get();
-    }
-    
-    const Type data = end->data;
-
-    if (previous) {
-      previous->next = nullptr;
+      end = &(*end)->next;
     }
 
+    const Type data = (*previous)->data;
+    (*previous) = nullptr;
     return data;
   }
 
@@ -53,25 +45,17 @@ public:
   }
 
   Type pop_front() {
-    if (!head) {
-      throw;
-    }
-
     const Type data = head->data;
     head = std::move(head->next);
     return data;
   }
   
   ~LinkedList() {
-    if (!head) {
-      return;
-    }
+    auto end = &head;
 
-    while (head->next) {
-      head = std::move(head->next);
+    while (*end) {
+      (*end) = std::move((*end)->next);
     }
-
-    head = nullptr;
   }
 
 private:
@@ -81,11 +65,23 @@ private:
 int main() {
   LinkedList<int> list;
 
-  list.push_front(0);
-  list.push_front(1);
-  list.push_front(2);
+  list.push_back(0);
+  list.push_back(1);
+  list.push_back(2);
 
   list.pop_back();
   list.pop_back();
   list.pop_back();
+
+  list.push_front(0);
+  list.push_front(1);
+  list.push_front(2);
+
+  list.pop_front();
+  list.pop_front();
+  list.pop_front();
+
+  list.push_front(0);
+  list.push_back(1);
+  list.push_front(2);
 }
