@@ -73,6 +73,16 @@ public:
 
     *previous = std::move(*target);
   }
+
+  Type& operator[](std::size_t index) {
+    auto target = &head;
+
+    for (auto i = 0u; i < index; i++) {
+      target = &(*target)->next;
+    }
+
+    return (*target)->data;
+  }
   
   ~LinkedList() {
     auto end = &head;
@@ -93,8 +103,7 @@ int main() {
   list.push_back(1);
   list.push_back(2);
 
-  list.delete_at(1);
-
-  std::cout << list.pop_back() << '\n';
-  std::cout << list.pop_back() << '\n';
+  std::cout << list[0] << '\n';
+  std::cout << list[1] << '\n';
+  std::cout << list[2] << '\n';
 }
