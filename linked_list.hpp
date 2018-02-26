@@ -7,7 +7,7 @@
 #include <utility>
 
 template<typename Type>
-class LinkedList final {
+class LinkedList {
 public:
   void push_back(const Type& data) {
     auto end = &head;
@@ -79,7 +79,7 @@ public:
     return (*target)->data;
   }
   
-  ~LinkedList() {
+  virtual ~LinkedList() {
     auto end = &head;
 
     while (*end) {
@@ -88,7 +88,7 @@ public:
   }
 
 private:
-  class Node final {
+  class Node {
   public:
     Node(const Type& data) : data {data} {}
     std::unique_ptr<Node> next = nullptr;
