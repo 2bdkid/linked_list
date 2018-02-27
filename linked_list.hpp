@@ -8,6 +8,10 @@
 
 template<typename Type>
 class LinkedList {
+private:
+  class Iter;
+  class IterConst;
+  
 public:
   LinkedList() = default;
 
@@ -36,7 +40,7 @@ public:
     return *this;
   }
 
-  virtual ~LinkedList() {
+  ~LinkedList() {
     auto end = &head;
 
     while (*end) {
@@ -56,6 +60,34 @@ public:
 
   void swap(LinkedList& other) {
     std::swap(head, other.head);
+  }
+
+  Iter begin() {
+    return Iter {&head};
+  }
+
+  IterConst begin() const {
+    return IterConst {&head};
+  }
+
+  Iter end() {
+    auto traverse = &head;
+
+    while (*traverse) {
+      traverse = &(*traverse)->next;
+    }
+
+    return Iter {traverse};
+  }
+
+  IterConst end() const {
+    auto traverse = &head;
+
+    while (*traverse) {
+      traverse = &(*traverse)->next;
+    }
+
+    return IterConst {traverse};
   }
 
   void push_back(const Type& data) {
@@ -148,6 +180,72 @@ private:
     Node(const Type& data) : data {data} {}
     std::unique_ptr<Node> next = nullptr;
     Type data;
+  };
+
+  class Iter {
+  public:
+    Iter(std::unique_ptr<Node>* ptr) : ptr {ptr} {}
+    
+    /* prefix */
+    Iter& operator++() {
+      ptr = &(*ptr)->next;
+      return *this;
+    }
+    
+    /* postfix */
+    Iter operator++(int) {
+      Iter temp {*this};
+      operator++();
+      return temp;
+    }
+
+    Type& operator*() {
+      return (*ptr)->data;
+    }
+
+    bool operator==(const Iter& other) const {
+      return ptr == other.ptr;
+    }
+
+    bool operator!=(const Iter& other) const {
+      return !(*this == other);
+    }
+
+  private:
+    std::unique_ptr<Node>* ptr = nullptr;
+  };
+
+  class IterConst {
+  public:
+    IterConst(std::unique_ptr<Node>* ptr) : ptr {ptr} {}
+
+    /* prefix */
+    IterConst& operator++() {
+      ptr = &(*ptr)->next;
+      return *this;
+    }
+
+    /* postfix */
+    IterConst operator++(int) {
+      IterConst temp {*this};
+      operator++();
+      return temp;
+    }
+
+    Type& operator*() const {
+      return (*ptr)->data;
+    }
+
+    bool operator==(const IterConst& other) const {
+      return ptr == other.ptr;
+    }
+
+    bool operator!=(const IterConst& other) const {
+      return !(*this == other);
+    }
+
+  private:
+    std::unique_ptr<Node> const* ptr = nullptr;
   };
   
   std::unique_ptr<Node> head = nullptr;
