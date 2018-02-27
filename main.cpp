@@ -12,4 +12,6 @@ int main() {
   auto list2 = list.split_at(2);
   std::cout << list2[0] << '\n';
   std::cout << list2[1] << '\n';
+
+  list.swap(list2);
 }

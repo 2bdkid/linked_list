@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_HPP
 #define LINKED_LIST_HPP
 
+#include <iostream>
 #include <memory>
 #include <cstddef>
 #include <utility>
@@ -52,7 +53,11 @@ public:
 
     return (*target)->data;
   }
-  
+
+  void swap(LinkedList& other) {
+    std::swap(head, other.head);
+  }
+
   void push_back(const Type& data) {
     auto end = &head;
 
@@ -144,7 +149,7 @@ private:
     std::unique_ptr<Node> next = nullptr;
     Type data;
   };
-
+  
   std::unique_ptr<Node> head = nullptr;
 };
 
