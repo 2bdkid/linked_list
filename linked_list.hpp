@@ -1,7 +1,6 @@
 #ifndef LINKED_LIST_HPP
 #define LINKED_LIST_HPP
 
-#include <iostream>
 #include <memory>
 #include <cstddef>
 #include <utility>
@@ -11,7 +10,8 @@ class LinkedList {
 private:
   class Iter;
   class IterConst;
-  
+  class Node;
+
 public:
   LinkedList() = default;
 
@@ -40,7 +40,7 @@ public:
     return *this;
   }
 
-  ~LinkedList() {
+  virtual ~LinkedList() {
     auto end = &head;
 
     while (*end) {
