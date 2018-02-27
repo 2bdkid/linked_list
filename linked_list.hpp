@@ -8,11 +8,12 @@
 template<typename Type>
 class LinkedList {
 private:
+  class Node;
+  
+public:
   class Iter;
   class IterConst;
-  class Node;
 
-public:
   LinkedList() = default;
 
   LinkedList(const LinkedList& other) {
@@ -173,15 +174,7 @@ public:
     std::swap(new_list.head, *traverse);
     return std::move(new_list);
   }
-
-private:
-  class Node {
-  public:
-    Node(const Type& data) : data {data} {}
-    std::unique_ptr<Node> next = nullptr;
-    Type data;
-  };
-
+  
   class Iter {
   public:
     Iter(std::unique_ptr<Node>* ptr) : ptr {ptr} {}
@@ -246,6 +239,14 @@ private:
 
   private:
     std::unique_ptr<Node> const* ptr = nullptr;
+  };
+  
+private:
+  class Node {
+  public:
+    Node(const Type& data) : data {data} {}
+    std::unique_ptr<Node> next = nullptr;
+    Type data;
   };
   
   std::unique_ptr<Node> head = nullptr;
