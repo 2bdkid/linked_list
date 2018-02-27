@@ -1,7 +1,6 @@
 #ifndef LINKED_LIST_HPP
 #define LINKED_LIST_HPP
 
-#include <iostream>
 #include <memory>
 #include <cstddef>
 #include <utility>
@@ -9,6 +8,51 @@
 template<typename Type>
 class LinkedList {
 public:
+  LinkedList() = default;
+
+  LinkedList(const LinkedList& other) {
+    auto traverse = &other.head;
+    auto new_node = &head;
+
+    while (*traverse) {
+      *new_node = std::make_unique<Node>((*traverse)->data);
+      traverse = &(*traverse)->next;
+      new_node = &(*new_node)->next;
+    }
+  }
+
+  LinkedList& operator=(LinkedList other) {
+    std::swap(head, other.head);
+    return *this;
+  }
+
+  LinkedList(LinkedList&& other) {
+    std::swap(head, other.head);
+  }
+
+  LinkedList& operator=(LinkedList&& other) {
+    std::swap(head, other.head);
+    return *this;
+  }
+
+  virtual ~LinkedList() {
+    auto end = &head;
+
+    while (*end) {
+      *end = std::move((*end)->next);
+    }
+  }
+
+  Type& operator[](std::size_t index) {
+    auto target = &head;
+
+    for (auto i = 0u; i < index; i++) {
+      target = &(*target)->next;
+    }
+
+    return (*target)->data;
+  }
+  
   void push_back(const Type& data) {
     auto end = &head;
 
@@ -67,24 +111,6 @@ public:
     }
 
     *previous = std::move(*target);
-  }
-
-  Type& operator[](std::size_t index) {
-    auto target = &head;
-
-    for (auto i = 0u; i < index; i++) {
-      target = &(*target)->next;
-    }
-
-    return (*target)->data;
-  }
-  
-  virtual ~LinkedList() {
-    auto end = &head;
-
-    while (*end) {
-      *end = std::move((*end)->next);
-    }
   }
 
 private:
