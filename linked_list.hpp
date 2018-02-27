@@ -125,6 +125,18 @@ public:
     return size;
   }
 
+  LinkedList split_at(std::size_t index) {
+    auto traverse = &head;
+    LinkedList new_list;
+    
+    for (auto i = 0u; i < index; i++) {
+      traverse = &(*traverse)->next;
+    }
+
+    std::swap(new_list.head, *traverse);
+    return std::move(new_list);
+  }
+
 private:
   class Node {
   public:
