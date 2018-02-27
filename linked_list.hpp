@@ -113,6 +113,18 @@ public:
     *previous = std::move(*target);
   }
 
+  std::size_t size() const {
+    std::size_t size = 0;
+    auto traverse = &head;
+
+    while (*traverse) {
+      traverse = &(*traverse)->next;
+      size++;
+    }
+
+    return size;
+  }
+
 private:
   class Node {
   public:

@@ -12,5 +12,7 @@ int main() {
 
   std::cout << list2[0] << '\n';
   std::cout << list2[1] << '\n';
-  std::cout << list2[2] << '\n';  
+  std::cout << list2[2] << '\n';
+
+  std::cout << list2.size() << '\n';
 }
