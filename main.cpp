@@ -7,5 +7,7 @@ int main() {
   list.push_back(1);
   list.push_back(2);
 
-  std::cout << list[0] << '\n';
+  std::cout << list.pop_back() << '\n';
+  std::cout << list.pop_back() << '\n';
+  std::cout << list.pop_back() << '\n';
 }

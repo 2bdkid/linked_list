@@ -49,7 +49,8 @@ public:
   LinkedList& operator=(LinkedList&&);
   virtual ~LinkedList();
 
-  Type& operator[](std::size_t);
+  Type& operator[](const std::size_t);
+  Type const& operator[](const std::size_t) const;
   Iter begin();
   IterConst begin() const;
   Iter end();
@@ -105,7 +106,18 @@ LinkedList<Type>::~LinkedList() {
 }
 
 template<typename Type>
-Type& LinkedList<Type>::operator[](std::size_t index) {
+Type& LinkedList<Type>::operator[](const std::size_t index) {
+  auto target = &head;
+
+  for (auto i = 0u; i < index; i++) {
+    target = &(*target)->next;
+  }
+
+  return (*target)->data;
+}
+
+template<typename Type>
+Type const& LinkedList<Type>::operator[](const std::size_t index) const {
   auto target = &head;
 
   for (auto i = 0u; i < index; i++) {
