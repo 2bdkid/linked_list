@@ -45,10 +45,10 @@ public:
   LinkedList() = default;
   LinkedList(const LinkedList&);
   LinkedList(LinkedList&&);
+  ~LinkedList();
+  
   LinkedList& operator=(LinkedList);
   LinkedList& operator=(LinkedList&&);
-  virtual ~LinkedList();
-
   Type& operator[](const std::size_t);
   Type const& operator[](const std::size_t) const;
   Iter begin();
