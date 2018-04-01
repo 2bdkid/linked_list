@@ -253,7 +253,7 @@ LinkedList<Type> LinkedList<Type>::split_at(std::size_t index) {
   }
 
   std::swap(new_list.head, *traverse);
-  return std::move(new_list);
+  return new_list;
 }
 
 template<typename Type>
